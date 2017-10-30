@@ -53,8 +53,8 @@ namespace Whitespace.Trim.Tests
         public void TrimEndOfLine_WhenMultilineWithWhitespaceAtEndOfEachLine_ShouldReturnWithEachLineTrimmed()
         {
             //---------------Arrange------------------
-            var input = "ab \r\ncd \r\n";
-            var expectd = "ab\r\ncd\r\n";
+            var input = "ab \r\ncd \r\nef\t\ngh \nzz    ";
+            var expectd = "ab\r\ncd\r\nef\ngh\nzz";
             var sut = new LineTrimmer();
             //---------------Act----------------------
             var actual = sut.TrimEndOfLine(input);
