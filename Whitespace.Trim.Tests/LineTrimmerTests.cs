@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace Whitespace.Trim.Tests
 {
@@ -10,7 +9,7 @@ namespace Whitespace.Trim.Tests
         [TestCase("abc")]
         [TestCase("\r\n")]
         [TestCase("\n")]
-        public void Trim_WhenNoWhitespacePresent_ShouldReturnInput(string input)
+        public void TrimEndOfLine_WhenNoWhitespacePresent_ShouldReturnInput(string input)
         {
             //---------------Arrange------------------
             var sut = new LineTrimmer();
@@ -26,7 +25,7 @@ namespace Whitespace.Trim.Tests
         [TestCase("    xyz")]
         [TestCase("\nxyz")]
         [TestCase("\r\nxyz")]
-        public void Trim_WhenLeadingWhitespacePresent_ShouldReturnInput(string input)
+        public void TrimEndOfLine_WhenLeadingWhitespacePresent_ShouldReturnInput(string input)
         {
             //---------------Arrange------------------
             var sut = new LineTrimmer();
@@ -38,7 +37,9 @@ namespace Whitespace.Trim.Tests
 
         [TestCase("z\t","z")]
         [TestCase("qvb ", "qvb")]
-        public void Trim_WhenTrailingWhitespacePresent_ShouldReturnTrimmedInput(string input, string expected)
+        [TestCase("try\r\n", "try\r\n")]
+        [TestCase("nigh\n", "nigh\n")]
+        public void TrimEndOfLine_WhenTrailingWhitespacePresent_ShouldReturnTrimmedInput(string input, string expected)
         {
             //---------------Arrange------------------
             var sut = new LineTrimmer();
@@ -47,18 +48,18 @@ namespace Whitespace.Trim.Tests
             //---------------Assert-------------------
             Assert.AreEqual(expected, actual);
         }
-    }
 
-    public class LineTrimmer
-    {
-        public string TrimEndOfLine(string input)
+        [Test]
+        public void TrimEndOfLine_WhenMultilineWithWhitespaceAtEndOfEachLine_ShouldReturnWithEachLineTrimmed()
         {
-            if (input == "\r\n" || input == "\n")
-            {
-                return input;
-            }
-
-            return input.TrimEnd();
+            //---------------Arrange------------------
+            var input = "ab \r\ncd \r\n";
+            var expectd = "ab\r\ncd\r\n";
+            var sut = new LineTrimmer();
+            //---------------Act----------------------
+            var actual = sut.TrimEndOfLine(input);
+            //---------------Assert-------------------
+            Assert.AreEqual(expectd, actual);
         }
     }
 }
